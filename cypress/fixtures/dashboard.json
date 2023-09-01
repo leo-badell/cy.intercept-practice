@@ -1,0 +1,46 @@
+
+{
+    "data": [
+        {
+            "subunit": {
+                "id": 3,
+                "name": "Teste 1"
+            },
+            "count": 12
+        },
+        {
+            "subunit": {
+                "id": 7,
+                "name": "Teste 2"
+            },
+            "count": 11
+        },
+        {
+            "subunit": {
+                "id": 2,
+                "name": "Teste 3"
+            },
+            "count": 9
+        },
+        {
+            "subunit": {
+                "id": 12,
+                "name": "Teste 4"
+            },
+            "count": 14
+        },
+        {
+            "subunit": {
+                "id": 12,
+                "name": "Teste 5"
+            },
+            "count": 8
+        }
+    ],
+    "meta": {
+        "otherEmployeeCount": 0,
+        "unassignedEmployeeCount": 8,
+        "totalSubunitCount": 6
+    },
+    "rels": []
+}

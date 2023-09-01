@@ -1,0 +1,46 @@
+
+{
+    "data": [
+        {
+            "location": {
+                "id": 2,
+                "name": "São Paulo"
+            },
+            "count": 12
+        },
+        {
+            "location": {
+                "id": 3,
+                "name": "Rio de Janeiro"
+            },
+            "count": 9
+        },
+        {
+            "location": {
+                "id": 5,
+                "name": "Florianópolis"
+            },
+            "count": 8
+        },
+        {
+            "location": {
+                "id": 1,
+                "name": "Porto Alegre"
+            },
+            "count": 6
+        },
+        {
+            "location": {
+                "id": 4,
+                "name": "Curitiba"
+            },
+            "count": 7
+        }
+    ],
+    "meta": {
+        "otherEmployeeCount": 0,
+        "unassignedEmployeeCount": 8,
+        "totalLocationCount": 6
+    },
+    "rels": []
+}

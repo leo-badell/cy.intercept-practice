@@ -1,0 +1,11 @@
+{
+  "name": "Hi",
+  "version": "1.0.0",
+  "description": "Cypress project",
+  "main": "index.js",
+  "author": "Leonardo Badell",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^13.1.0"
+  }
+}
