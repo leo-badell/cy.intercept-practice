@@ -5,6 +5,11 @@
   "main": "index.js",
   "author": "Leonardo Badell",
   "license": "MIT",
+  "scripts": {
+    "start": "http-server",
+    "test": "cypress run",
+    "cypress:open": "cypress open"
+  },
   "devDependencies": {
     "cypress": "^13.1.0"
   }
