@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+// const { method } = require("cypress/types/bluebird");
+
 describe('Testing Orange HRM', () => {
 
   beforeEach('log in to the website', () => { 
@@ -22,7 +24,7 @@ describe('Testing Orange HRM', () => {
     cy.intercept('POST', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/posts').as('postMethod')
     
     cy.get('[placeholder="What\'s on your mind?"]').type('Today is a good day to test')
-    .should('be.visible').click().focus()
+    .should('be.visible').click()
     cy.get('.oxd-button').eq(0).click({force: true})
    
     cy.get('@postMethod').then( xhr => {
@@ -112,9 +114,98 @@ describe('Testing Orange HRM', () => {
 
  })
 
+ it.only('Deleting post of the Buzznewsfeed', () => {
 
+  const accessOrange = {
+    username: "Admin",
+    password: "admin123"
+  }
+  
+  
+  // Send the POST request to log in and get the HTML response
+  cy.request('POST', 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate', accessOrange)
+    .then((response) => {
+      // Check for a successful login response
+      expect(response.status).to.equal(200);
+
+      // Extract the token from the HTML content
+      const htmlContent = response.body;
+      const tokenMatch = htmlContent.match(/:token="([^"]+)"/);
+      const token = tokenMatch ? tokenMatch[1] : null;
+
+      if (token) {
+        // Use the extracted token for subsequent requests
+        // For example, you can make authenticated requests here
+        cy.request({
+          method: 'POST',
+          url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate', // Replace with the URL you want to access
+          headers: {
+            Authorization: `Bearer 3ab4d9e61bad2f2ad4ab422f4.OKXRkfph9l0z_usBlr80BcTVi0FZH9C1L-NCRNHGhAA.VdCzxr9WxhZJmb420pJcYImSvBkRJ_3mZIgafZT-6ldy9pD2yADCZEfIog&`
+
+          },
+        })
+      } else {
+        // Handle the case where the token couldn't be extracted
+        cy.log("Token not found in HTML.");
+      }
+
+      cy.request({
+        method: 'POST',
+        url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/posts', 
+        body: {
+          "type": "text",
+          "text": "Deleting this article with Cypres" // Modify the text as needed
+        },
+        // failOnStatusCode: false,
+      })
+
+      .then((postResponse) => {
+        // Check if the post request was successful
+        expect(postResponse.status).to.equal(200);
+
+
+      cy.get('.oxd-sidepanel-body')
+      cy.get('.oxd-main-menu-item')
+      .eq(11)
+      .should('contain', 'Buzz').click()
+
+
+      cy.contains('p.oxd-text', 'Deleting this article with Cypres')
+ 
+  cy.get('button.oxd-icon-button').eq(0).click()
+
+
+
+      Cypress.Commands.add('deletePost', () => {
+       
+        cy.get('.bi-trash')
+      .should('contain','Delete Post').eq(0).click(); 
+      });
+
+      cy.request({
+        url: 'https://opensource-demo.orangehrmlive.com/web/index.php/buzz/viewBuzz',
+        method: 'GET'
+      }).then((buzzResponse) => {
+        // Check if the get request was successful
+        expect(buzzResponse.status).to.equal(200);
+
+        // Check if the buzz array exists and has items before accessing it
+        if (buzzResponse.body && Array.isArray(buzzResponse.body.buzz) && buzzResponse.body.buzz.length > 0) {
+          // Check if the article was deleted
+          expect(buzzResponse.body.buzz[0].title).not.to.equal('Deleting this article with Cypres');
+        }
+});
+
+
+ })
 
 })
+})
+})
+
+
+
+
 
 
 
