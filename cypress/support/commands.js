@@ -25,8 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 
-
-Cypress.Commands.add('logInToOrangeHRM', () => {
+  
+  Cypress.Commands.add('logInToOrangeHRM', () => {
     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
     cy.get('[placeholder="Username"]').type('Admin')
     cy.get('[placeholder="Password"]').type('admin123')
