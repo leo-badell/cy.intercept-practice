@@ -2,8 +2,7 @@
 
 describe('Testing Orange HRM', () => {
   beforeEach('log in to the website', () => {
-    cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/subunit', { fixture: 'dashboard.json' });
-    cy.logInToOrangeHRM();
+    cy.logInToOrangeHRM("Succefully logged in");
   });
 
   // This step is to log in to the website
@@ -15,9 +14,9 @@ describe('Testing Orange HRM', () => {
       .eq(11)
       .should('contain', 'Buzz')
       .click();
-      
+
     // This step is to intercept a URL in order to post an article.
-    cy.intercept('POST', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/posts').as('postMethod');
+    cy.intercept({method:'POST', path:'posts'}).as('postMethod');
 
     cy.get('[placeholder="What\'s on your mind?"]')
       .type('Today is a good day to test')
@@ -34,6 +33,7 @@ describe('Testing Orange HRM', () => {
 
   // This step is for changing the names of sub-units on the pie chart using a new JSON format.
   it('Changing the Employee\'s Distribution by Sub-Unit', () => {
+     cy.intercept({method:'GET', path:'subunit'}, { fixture: 'dashboard.json' });
     cy.get('.oxd-sheet')
       .should('contain', 'Teste 1')
       .and('contain', 'Teste 2')
@@ -45,7 +45,7 @@ describe('Testing Orange HRM', () => {
 
   // This step is for changing the names of locations on the pie chart using a new JSON format.
   it('Changing the Employee\'s Distribution by Location', () => {
-    cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/locations', { fixture: 'dashboard2.json' });
+    cy.intercept({method:'GET', path:'locations'}, { fixture: 'dashboard2.json' });
 
     cy.get('.oxd-grid-item')
       .should('contain', 'São Paulo')
@@ -58,8 +58,8 @@ describe('Testing Orange HRM', () => {
 
    // This step is for verifying the Buzz newsfeed.
   it('Verifying the Buzz Newsfeed', () => {
-    cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/anniversaries*', { "data": [], "meta": { "total": 0 }, "rels": [] });
-    cy.intercept('GET', 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/feed*', { fixture: 'newsfeed.json' });
+    cy.intercept({method:'GET', path:'anniversaries*'}, { "data": [], "meta": { "total": 0 }, "rels": [] });
+    cy.intercept({method:'GET', path:'feed*'}, { fixture: 'newsfeed.json' });
 
     cy.get('.oxd-sidepanel-body');
     cy.get('.oxd-main-menu-item')
@@ -103,7 +103,7 @@ describe('Testing Orange HRM', () => {
 
 
   // This step is to practice cy.request using POST methods.
-  it('Deleting post of the Buzznewsfeed', () => {
+  it.only('Deleting post of the Buzznewsfeed', () => {
     const accessOrange = {
       username: "Admin",
       password: "admin123"
@@ -124,7 +124,7 @@ describe('Testing Orange HRM', () => {
       if (token) {
         cy.request({
           method: 'POST',
-          url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate',
+          url: `${baseUrl}web/index.php/auth/validate`,
           headers: {
             Authorization: `Bearer 4287e7dd282.yr4zQuk4Ksp2SNoAc18gaMV-Mt_C6olbCZBhxuzZWMQ.mvAEKI9TE488cLNMPxdlXrIGebf1rbAhSMEF_r60MoGT-0EzoVZbgkQS4g&`
           }
