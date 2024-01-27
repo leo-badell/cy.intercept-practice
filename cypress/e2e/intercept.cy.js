@@ -103,7 +103,7 @@ describe('Testing Orange HRM', () => {
 
 
   // This step is to practice cy.request using POST methods.
-  it.only('Deleting post of the Buzznewsfeed', () => {
+  it('Deleting post of the Buzznewsfeed', () => {
     const accessOrange = {
       username: "Admin",
       password: "admin123"
