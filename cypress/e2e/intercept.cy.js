@@ -7,7 +7,7 @@ describe('Testing Orange HRM', () => {
 
   // This step is to log in to the website
   it('Log in', () => {
-    cy.log('I\'m in!!!');
+    cy.log(`I'm in!!!`);
 
     cy.get('.oxd-sidepanel-body');
     cy.get('.oxd-main-menu-item')
@@ -32,7 +32,7 @@ describe('Testing Orange HRM', () => {
   });
 
   // This step is for changing the names of sub-units on the pie chart using a new JSON format.
-  it('Changing the Employee\'s Distribution by Sub-Unit', () => {
+  it(`Changing the Employee's Distribution by Sub-Unit`, () => {
      cy.intercept({method:'GET', path:'subunit'}, { fixture: 'dashboard.json' });
     cy.get('.oxd-sheet')
       .should('contain', 'Teste 1')
@@ -44,7 +44,7 @@ describe('Testing Orange HRM', () => {
 
 
   // This step is for changing the names of locations on the pie chart using a new JSON format.
-  it('Changing the Employee\'s Distribution by Location', () => {
+  it(`Changing the Employee's Distribution by Location`, () => {
     cy.intercept({method:'GET', path:'locations'}, { fixture: 'dashboard2.json' });
 
     cy.get('.oxd-grid-item')
@@ -86,12 +86,12 @@ describe('Testing Orange HRM', () => {
     cy.fixture('newsfeed').then((file) => {
       const targetPostIndex = 1;
       file.data[targetPostIndex].stats.numOfLikes += 1;
-      cy.intercept('POST', `https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/shares/${file.data[targetPostIndex].id}/likes`, {
+      cy.intercept('POST', `${Cypress.env(`baseUrl`)}/${file.data[targetPostIndex].id}/likes`, {
         statusCode: 200,
         body: file.data[targetPostIndex]
       }).as('likeRequest');
 
-      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/buzz/viewBuzz');
+      cy.visit(`${Cypress.env(`baseUrl`)}`);
 
       cy.get('#heart-svg[class="orangehrm-heart-icon"]')
         .eq(targetPostIndex)

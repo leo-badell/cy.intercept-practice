@@ -27,7 +27,7 @@
 
   
   Cypress.Commands.add('logInToOrangeHRM', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit(Cypress.env('baseUrl'))
     cy.get('[placeholder="Username"]').type('Admin')
     cy.get('[placeholder="Password"]').type('admin123')
     cy.get('form').submit()
