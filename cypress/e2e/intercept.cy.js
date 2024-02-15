@@ -117,19 +117,6 @@ describe('Testing Orange HRM', () => {
     }).then((response) => {
       expect(response.status).to.equal(200);
 
-      const htmlContent = response.body;
-      const tokenMatch = htmlContent.match(/:token="([^"]+)"/);
-      const token = tokenMatch ? tokenMatch[1] : null;
-
-      if (token) {
-        cy.request({
-          method: 'POST',
-          url: `${baseUrl}web/index.php/auth/validate`,
-          headers: {
-            Authorization: `Bearer 4287e7dd282.yr4zQuk4Ksp2SNoAc18gaMV-Mt_C6olbCZBhxuzZWMQ.mvAEKI9TE488cLNMPxdlXrIGebf1rbAhSMEF_r60MoGT-0EzoVZbgkQS4g&`
-          }
-        });
-      }
 
       cy.request({
         method: 'POST',
