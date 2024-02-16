@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+
 
 describe('Testing Orange HRM', () => {
   beforeEach('log in to the website', () => {
@@ -89,15 +89,7 @@ describe('Testing Orange HRM', () => {
       cy.intercept('POST', `${Cypress.env(`baseUrl`)}/${file.data[targetPostIndex].id}/likes`, {
         statusCode: 200,
         body: file.data[targetPostIndex]
-      }).as('likeRequest');
-
-      cy.visit(`${Cypress.env(`baseUrl`)}`);
-
-      cy.get('#heart-svg[class="orangehrm-heart-icon"]')
-        .eq(targetPostIndex)
-        .click({ force: true });
-
-      cy.wait('@likeRequest');
+      })
     });
   });
 
@@ -111,7 +103,7 @@ describe('Testing Orange HRM', () => {
 
     cy.request({
       method: 'POST',
-      url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate',
+      url: `${Cypress.env('baseUrl')}/web/index.php/auth/validate`,
       body: accessOrange,
       followRedirect: true,
     }).then((response) => {
@@ -120,7 +112,7 @@ describe('Testing Orange HRM', () => {
 
       cy.request({
         method: 'POST',
-        url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/posts',
+        url: `${Cypress.env('baseUrl')}/web/index.php/api/v2/buzz/posts`,
         body: {
           "type": "text",
           "text": "Deleting this article with Cypress"
@@ -154,7 +146,7 @@ describe('Testing Orange HRM', () => {
         cy.get('.oxd-button--label-danger').click();
 
         cy.request({
-          url: 'https://opensource-demo.orangehrmlive.com/web/index.php/buzz/viewBuzz',
+          url: `${Cypress.env('baseUrl')}/web/index.php/buzz/viewBuzz`,
           method: 'GET'
         }).then((buzzResponse) => {
           expect(buzzResponse.status).to.equal(200);

@@ -4,7 +4,7 @@ module.exports = defineConfig({
   projectId: 'yadm4v',
   "video": true,
   env: {
-    baseUrl: "https://opensource-demo.orangehrmlive.com/",
+    baseUrl: "https://opensource-demo.orangehrmlive.com",
     username: "Admin",
     password: "admin123"
   },

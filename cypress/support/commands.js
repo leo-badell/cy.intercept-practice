@@ -32,3 +32,7 @@
     cy.get('[placeholder="Password"]').type('admin123')
     cy.get('form').submit()
 })
+
+Cypress.Commands.add('getByClass', (className) => {
+  return cy.get(`.${className}`)
+})
