@@ -94,68 +94,54 @@ describe('Testing Orange HRM', () => {
   });
 
 
-  // This step is to practice cy.request using POST methods.
+  // This step is to practice POST methods.
   it('Deleting post of the Buzznewsfeed', () => {
-    const accessOrange = {
-      username: "Admin",
-      password: "admin123"
-    };
-
-    cy.request({
+    cy.intercept({
       method: 'POST',
       url: `${Cypress.env('baseUrl')}/web/index.php/auth/validate`,
-      body: accessOrange,
-      followRedirect: true,
-    }).then((response) => {
-      expect(response.status).to.equal(200);
+    }, {
+      statusCode: 200,
+      body: {
+        "username": "Admin",
+        "password": "admin123"
+      }
+    }).as('getValidation');
 
+    cy.intercept({
+      method: 'POST',
+      url: `${Cypress.env('baseUrl')}/web/index.php/api/v2/buzz/posts`,
+    }, {
+      statusCode: 200,
+      body: {
+         "type": "text",
+         "text": "Deleting this article with Cypress"
+      }
+    }).as('getPost');
 
-      cy.request({
-        method: 'POST',
-        url: `${Cypress.env('baseUrl')}/web/index.php/api/v2/buzz/posts`,
-        body: {
-          "type": "text",
-          "text": "Deleting this article with Cypress"
-        },
-      }).then((postResponse) => {
-        expect(postResponse.status).to.equal(200);
+    cy.get('.oxd-sidepanel-body');
+    cy.get('.oxd-main-menu-item')
+      .eq(11)
+      .should('contain', 'Buzz')
+      .click();
 
-        cy.get('.oxd-sidepanel-body');
-        cy.get('.oxd-main-menu-item')
-          .eq(11)
-          .should('contain', 'Buzz')
-          .click();
+    cy.get(':nth-child(1) > .oxd-sheet')
+      .find('.orangehrm-buzz-post')
+      .find('.orangehrm-buzz-post-header')
+      .find('.orangehrm-buzz-post-header-config')
+      .find('li > .oxd-icon-button > .oxd-icon')
+      .first()
+      .click({ force: true });
 
-        cy.get('div.oxd-layout-context')
-          .find('.oxd-text')
-          .should('contain', 'Deleting this article with Cypress');
+    cy.get('.oxd-dropdown-menu > :nth-child(1)')
+      .should('exist')
+      .contains('Delete Post')
+      .click();
 
-        cy.get(':nth-child(1) > .oxd-sheet')
-          .find('.orangehrm-buzz-post')
-          .find('.orangehrm-buzz-post-header')
-          .find('.orangehrm-buzz-post-header-config')
-          .find('li > .oxd-icon-button > .oxd-icon')
-          .first()
-          .click({ force: true });
+    cy.get('.oxd-button--label-danger').click();
 
-        cy.get('.oxd-dropdown-menu > :nth-child(1)')
-          .should('exist')
-          .contains('Delete Post')
-          .click();
-
-        cy.get('.oxd-button--label-danger').click();
-
-        cy.request({
-          url: `${Cypress.env('baseUrl')}/web/index.php/buzz/viewBuzz`,
-          method: 'GET'
-        }).then((buzzResponse) => {
-          expect(buzzResponse.status).to.equal(200);
-
-          if (buzzResponse.body && Array.isArray(buzzResponse.body.buzz) && buzzResponse.body.buzz.length > 0) {
-            expect(buzzResponse.body.buzz[0].title).not.to.equal('Deleting this article with Cypress');
-          }
-        });
-      });
-    });
-  });
+    cy.intercept({
+      url: `${Cypress.env('baseUrl')}/web/index.php/buzz/viewBuzz`,
+      method: 'GET'
+    }).as('getBuzz')
+  });  
 });

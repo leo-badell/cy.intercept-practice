@@ -26,12 +26,25 @@
 
 
   
-  Cypress.Commands.add('logInToOrangeHRM', () => {
-    cy.visit(Cypress.env('baseUrl'))
-    cy.get('[placeholder="Username"]').type('Admin')
-    cy.get('[placeholder="Password"]').type('admin123')
-    cy.get('form').submit()
+Cypress.Commands.add('logInToOrangeHRM', () => {
+  cy.visit(Cypress.env('baseUrl'))
+
+  // Access to username and password placeholders
+  cy.get('input[placeholder]').each(($el, index, $list) => {
+    const placeholder = $el.attr('placeholder');
+
+    if (/username/i.test(placeholder) || /nombre de usuario/i.test(placeholder)) {
+      cy.wrap($el).type('Admin');
+    } else if (/password/i.test(placeholder) || /contraseña/i.test(placeholder)) {
+      cy.wrap($el).type('admin123');
+    }
+  })
+
+  cy.get('form').submit()
 })
+
+
+
 
 Cypress.Commands.add('getByClass', (className) => {
   return cy.get(`.${className}`)
