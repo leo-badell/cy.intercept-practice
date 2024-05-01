@@ -102,8 +102,8 @@ describe('Testing Orange HRM', () => {
     }, {
       statusCode: 200,
       body: {
-        "username": "Admin",
-        "password": "admin123"
+        "username": Cypress.env('username'),
+        "password": Cypress.env('password')
       }
     }).as('getValidation');
 
