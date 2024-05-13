@@ -1,5 +1,5 @@
 {
-  "name": "Hi",
+  "name": "cy.intercept",
   "version": "1.0.0",
   "description": "Cypress project",
   "main": "index.js",
@@ -11,6 +11,7 @@
     "cypress:open": "cypress open"
   },
   "devDependencies": {
-    "cypress": "^13.7.0"
+    "cypress": "^13.7.0",
+    "faker": "^6.6.6"
   }
 }
